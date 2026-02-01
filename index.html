@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tata Service Explorer</title>
+  <style>
+    body { font-family: Arial; background:#0f172a; color:#fff; }
+    .card { background:#1e293b; padding:15px; margin:10px; border-radius:8px; }
+    input { padding:6px; width:300px; }
+  </style>
+</head>
+<body>
+
+<h3>🔎 Tata Service Blockchain Explorer</h3>
+
+
+<button onclick="inc()">Increment</button>
+<button onclick="connect()">Connect Wallet</button>
+<input id="addr" placeholder="Search Address" />
+<button onclick="search()">Search</button>
+
+<script src="wallet.js"></script>
+<script src="provider.js"></script>
+<div id="result"></div>
+<h2>Latest Blocks</h2>
+<div id="blocks"></div>
+
+<script>
+async function loadBlocks() {
+  const res = await fetch("http://localhost:4000/blocks");
+  const blocks = await res.json();
+
+  document.getElementById("blocks").innerHTML =
+    blocks.map(b => `
+      <div class="card">
+        <b>Hash:</b> ${b.hash}<br/>
+        <b>Tx:</b> ${b.transactions.length}<br/>
+        <b>Time:</b> ${new Date(b.timestamp).toLocaleString()}
+      </div>
+    `).join("");
+}
+
+async function search() {
+  const addr = document.getElementById("addr").value;
+  const res = await fetch(`http://localhost:4000/address/${addr}`);
+  const data = await res.json();
+
+  document.getElementById("result").innerHTML = `
+    <div class="card">
+      <b>Address:</b> ${data.address}<br/>
+      <b>Balance:</b> ${data.balance} TSC
+    </div>
+  `;
+}
+
+loadBlocks();
+</script>
+<script>
+async function connect() {
+  const address = await window.tata.enable();
+  alert("Connected: " + address);
+}
+
+async function inc() {
+  const tx = {
+    type: "CONTRACT_CALL",
+    from: "USER_ADDRESS",
+    payload: {
+      address: "counter1",
+      args: { action: "inc" }
+    },
+    gasLimit: 10,
+    gasPrice: 1
+  };
+
+  const res = await window.tata.sendTransaction(tx);
+  console.log(res);
+}
+</script>
+</body>
+</html>
+
