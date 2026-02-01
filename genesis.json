@@ -1,0 +1,12 @@
+
+{
+      "chainId": "tata-service-mainnet",
+        "token": {
+            "name": "Tata Service Coin",
+                "symbol": "TSC",
+                    "totalSupply": 1000000000
+                      },
+                        "difficulty": 4,
+                          "reward": 25
+                         
+                    }                      

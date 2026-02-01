@@ -1,0 +1,15 @@
+{
+      "name": "tata-service-blockchain",
+      "version": "1.0.0",
+      "main": "index.js",
+      "type": "module",
+      "dependencies": {
+            "body-parser": "^2.2.2",
+            "crypto-js": "^4.2.0",
+            "elliptic": "^6.5.4",
+            "express": "^5.2.1",
+            "ws": "^8.19.0"
+      }
+}
+
+        
